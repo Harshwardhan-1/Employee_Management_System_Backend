@@ -1,4 +1,5 @@
 import {Request,Response} from 'express';
+import { userModel } from '../models/userModel';
 import { employeeModel } from '../models/EmployeeCompleteProfile';
 
 export const completeEmployee=async(req:Request,res:Response)=>{
@@ -16,6 +17,15 @@ if(checkIt){
 }
 const user=(req as any).user;
 const userId=user.userId;
+
+const updateRole=await userModel.findOne({gmail});
+if(!updateRole){
+    return res.status(401).json({
+        message:"UserNotFound",
+    });
+}
+updateRole.status="APPROVED";
+await updateRole.save();
 const createIt=await employeeModel.create({
     userId:userId,
     name,
@@ -23,6 +33,7 @@ const createIt=await employeeModel.create({
     department,
     designation,
     salary,
+    status:"APPROVED",
     date:Date.now(),
 });
 return res.status(200).json({
