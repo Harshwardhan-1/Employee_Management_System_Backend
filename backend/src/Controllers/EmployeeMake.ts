@@ -17,7 +17,7 @@ if(!chName.isValid){
         message:"name should be of 3 characters",
     });
 }
-const chgmail=await checkEmail({gmail});
+const chgmail=checkEmail({gmail});
 if(!chgmail.isValid){
     return res.status(400).json({
         message:"Enter proper email id",

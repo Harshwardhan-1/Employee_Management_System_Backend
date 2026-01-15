@@ -15,6 +15,7 @@ const employeeSchema=new mongoose.Schema({
     },
     department:{
         type:String,
+        enum:['Hr',"Finance",'Backend Devloper','Frontend Devloper',"API Devloper","UI Devloper"],
         required:true,
     },
     salary:{
