@@ -207,3 +207,46 @@ export const changePassword=async(req:Request,res:Response)=>{
         }
     });
 }
+
+
+
+
+export const checkUser=async(req:Request,res:Response)=>{
+    const {gmail}=req.body;
+    if(!gmail){
+        return res.status(401).json({
+            message:"provide proper detail",
+        });
+    }
+    const checkIt=await userModel.findOne({gmail});
+    if(!checkIt){
+        return res.status(401).json({
+            message:"Not Find",
+        });
+    }
+    if(checkIt.identity=== "ADMIN"){
+        return res.status(200).json({
+            message:"user is admin",
+            data:checkIt,
+        });
+    }
+}
+
+
+
+
+export const approval=async(req:Request,res:Response)=>{
+const checkRequest=await userModel.find({
+    status:"PENDING",
+    identity:"EMPLOYEE",
+});
+if(checkRequest.length=== 0){
+    return res.status(401).json({
+        message:"no result to show",
+    });
+}
+return res.status(200).json({
+    message:"pending request",
+    data:checkRequest,
+});
+}
