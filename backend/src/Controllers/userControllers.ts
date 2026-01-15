@@ -30,8 +30,10 @@ bcrypt.genSalt(12, function(err, salt) {
     name,
     gmail,
     password:hash,
+    identity:"EMPLOYEE",
+    status:"PENDING"
 });
-let token=jwt.sign({gmail:gmail,userId:newUser._id},process.env.JWT_SECRET!);
+let token=jwt.sign({name:name,gmail:gmail,userId:newUser._id,identity:newUser.identity,status:newUser.status},process.env.JWT_SECRET!);
 res.cookie("token",token,{
     httpOnly:true,
     secure:true,
@@ -65,7 +67,7 @@ export const getSignIn=async(req:Request,res:Response)=>{
             message:"Password is incorrect",
         });
     }
-    let token=jwt.sign({gmail:gmail,userId:checkUser._id},process.env.JWT_SECRET!);
+    let token=jwt.sign({name:checkUser.name,gmail:gmail,userId:checkUser._id,identity:checkUser.identity,status:checkUser.status},process.env.JWT_SECRET!);
     res.cookie("token",token,{
         httpOnly:true,
         secure:true,
