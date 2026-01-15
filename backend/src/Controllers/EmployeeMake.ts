@@ -1,6 +1,7 @@
 import {Request,Response} from 'express';
 import { userModel } from '../models/userModel';
 import { employeeModel } from '../models/EmployeeCompleteProfile';
+import { checkName } from '../validators/checkNameValidator';
 
 export const completeEmployee=async(req:Request,res:Response)=>{
 const {name,gmail,department,designation,salary}=req.body;
@@ -9,6 +10,13 @@ if(!name || !gmail || !department || !designation || !salary){
         message:"provide proper detail",
     });
 }
+const chName=await checkName({name});
+if(!chName.isValid){
+    return res.status(400).json({
+        message:"name should be of 3 characters",
+    });
+}
+
 const checkIt=await employeeModel.findOne({gmail});
 if(checkIt){
     return res.status(401).json({
